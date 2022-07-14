@@ -1489,6 +1489,8 @@ end
 internal.jumplist = function(opts)
   opts = opts or {}
   local jumplist = vim.fn.getjumplist()[1]
+  local current_jumplist_pos = vim.fn.getjumplist()[2] + 1
+  local selection_index = 1
 
   -- reverse the list
   local sorted_jumplist = {}
@@ -1496,6 +1498,9 @@ internal.jumplist = function(opts)
     if api.nvim_buf_is_valid(jumplist[i].bufnr) then
       jumplist[i].text = api.nvim_buf_get_lines(jumplist[i].bufnr, jumplist[i].lnum - 1, jumplist[i].lnum, false)[1]
         or ""
+      if current_jumplist_pos == i then
+          selection_index = #sorted_jumplist + 1
+      end
       table.insert(sorted_jumplist, jumplist[i])
     end
   end
@@ -1509,6 +1514,7 @@ internal.jumplist = function(opts)
       },
       previewer = conf.qflist_previewer(opts),
       sorter = conf.generic_sorter(opts),
+      default_selection_index = selection_index,
     })
     :find()
 end
