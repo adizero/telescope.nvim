@@ -1550,7 +1550,7 @@ actions.mouse_click = function(prompt_bufnr)
   local pos = vim.fn.getmousepos()
   if pos.winid == picker.results_win then
     vim.defer_fn(function()
-      picker:set_selection(picker:get_row(picker.max_results - pos.line + 1))
+      picker:set_selection(picker:get_row(pos.line))
     end, 0)
   elseif pos.winid == picker.preview_win then
     vim.defer_fn(function()
@@ -1566,7 +1566,7 @@ actions.double_mouse_click = function(prompt_bufnr)
   local pos = vim.fn.getmousepos()
   if pos.winid == picker.results_win then
     vim.defer_fn(function()
-      picker:set_selection(picker:get_row(picker.max_results - pos.line + 1))
+      picker:set_selection(picker:get_row(pos.line))
       actions.select_default(prompt_bufnr)
     end, 0)
   end
